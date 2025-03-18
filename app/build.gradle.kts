@@ -23,6 +23,9 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        buildConfigField("String", "BASE_URL", "\"https://catfact.ninja/\"")
+
     }
 
     buildTypes {
@@ -40,6 +43,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.14"
@@ -71,8 +75,9 @@ protobuf {
 }
 
 dependencies {
+    val lifecycle_version = "2.8.7"
     implementation("androidx.core:core-ktx:1.15.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version")
     implementation("androidx.activity:activity-compose:1.10.1")
     implementation("androidx.compose.ui:ui:1.7.8")
     implementation("androidx.compose.ui:ui-tooling-preview:1.7.8")
@@ -90,6 +95,10 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
 
     implementation("io.coil-kt.coil3:coil-compose:3.1.0")
+
+
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
