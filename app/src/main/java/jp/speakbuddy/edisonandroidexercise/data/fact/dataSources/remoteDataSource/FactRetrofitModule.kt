@@ -1,4 +1,4 @@
-package jp.speakbuddy.edisonandroidexercise.data.fact.dataSource.remoteDataSource
+package jp.speakbuddy.edisonandroidexercise.data.fact.dataSources.remoteDataSource
 
 import dagger.Module
 import dagger.Provides

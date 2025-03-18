@@ -1,4 +1,4 @@
-package jp.speakbuddy.edisonandroidexercise.data.fact.dataSource.remoteDataSource.models
+package jp.speakbuddy.edisonandroidexercise.data.fact.dataSources.remoteDataSource.models
 
 import kotlinx.serialization.Serializable
 
