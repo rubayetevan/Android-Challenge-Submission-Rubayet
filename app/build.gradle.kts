@@ -45,13 +45,17 @@ android {
         }
 
         buildConfigField("String", "BASE_URL", "\"https://catfact.ninja/\"")
+        buildConfigField("String", "IMAGE_CACHE_DIRECTORY", "\"image_cache\"")
+        buildConfigField("String", "FACT_PROTOBUF_FILE_NAME", "\"fact.pb\"")
 
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
