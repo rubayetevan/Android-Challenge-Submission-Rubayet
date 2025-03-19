@@ -10,24 +10,6 @@ plugins {
     id("com.google.protobuf")
 }
 
-protobuf {
-    protoc {
-        artifact = "com.google.protobuf:protoc:3.25.2" //replace with the latest
-    }
-    plugins {
-        id("grpc") {
-            artifact = "io.grpc:protoc-gen-grpc-java:1.54.0" // replace with the latest
-        }
-    }
-    generateProtoTasks {
-        all().forEach {
-            it.plugins {
-                id("grpc")
-            }
-        }
-    }
-}
-
 android {
     namespace = "jp.speakbuddy.edisonandroidexercise"
     compileSdk = 35
@@ -47,6 +29,8 @@ android {
         buildConfigField("String", "BASE_URL", "\"https://catfact.ninja/\"")
         buildConfigField("String", "IMAGE_CACHE_DIRECTORY", "\"image_cache\"")
         buildConfigField("String", "FACT_PROTOBUF_FILE_NAME", "\"fact.pb\"")
+        buildConfigField( "double", "IMAGE_MEMORY_CACHE_PERCENT", "0.25")
+        buildConfigField( "double", "IMAGE_DISK_CACHE_PERCENT", "0.02")
 
     }
 
@@ -84,10 +68,15 @@ android {
 protobuf {
     protoc {
         val protocPlatform = project.findProperty("protoc_platform") as? String
-        if (protocPlatform != null) {
-            artifact = "com.google.protobuf:protoc:3.25.2:$protocPlatform"
+        artifact = if (protocPlatform != null) {
+            "com.google.protobuf:protoc:3.25.2:$protocPlatform"
         } else {
-            artifact = "com.google.protobuf:protoc:3.25.2"
+            "com.google.protobuf:protoc:3.25.2"
+        }
+    }
+    plugins {
+        id("grpc") {
+            artifact = "io.grpc:protoc-gen-grpc-java:1.54.0"
         }
     }
     generateProtoTasks {
@@ -118,16 +107,11 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:2.52")
     implementation("com.google.protobuf:protobuf-kotlin-lite:3.25.2")
     implementation("com.google.protobuf:protoc:3.25.2")
-
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
-
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
-
     implementation("io.coil-kt.coil3:coil-compose:3.1.0")
-
-
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version")
 
