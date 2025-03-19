@@ -6,4 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface FactRepository {
     fun getNewFact(): Flow<Result<FactResponse>>
+    fun getLastFact(): Flow<FactResponse?>
+    fun saveFact(factResponse: FactResponse)
 }
