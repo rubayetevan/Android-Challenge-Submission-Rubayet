@@ -1,3 +1,5 @@
+import com.google.protobuf.gradle.id
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -6,6 +8,24 @@ plugins {
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
     id("com.google.protobuf")
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.25.2" //replace with the latest
+    }
+    plugins {
+        id("grpc") {
+            artifact = "io.grpc:protoc-gen-grpc-java:1.54.0" // replace with the latest
+        }
+    }
+    generateProtoTasks {
+        all().forEach {
+            it.plugins {
+                id("grpc")
+            }
+        }
+    }
 }
 
 android {
@@ -56,9 +76,15 @@ android {
 }
 
 // Setup protobuf configuration, generating lite Java and Kotlin classes
+
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:22.0"
+        val protocPlatform = project.findProperty("protoc_platform") as? String
+        if (protocPlatform != null) {
+            artifact = "com.google.protobuf:protoc:3.25.2:$protocPlatform"
+        } else {
+            artifact = "com.google.protobuf:protoc:3.25.2"
+        }
     }
     generateProtoTasks {
         all().forEach { task ->
@@ -87,6 +113,7 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.52")
     kapt("com.google.dagger:hilt-android-compiler:2.52")
     implementation("com.google.protobuf:protobuf-kotlin-lite:3.25.2")
+    implementation("com.google.protobuf:protoc:3.25.2")
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
