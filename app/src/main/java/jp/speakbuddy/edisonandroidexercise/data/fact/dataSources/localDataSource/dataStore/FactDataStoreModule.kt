@@ -17,10 +17,10 @@ private const val FACT_PROTOBUF_FILE_NAME = "fact.pb"
 
 @Module
 @InstallIn(SingletonComponent::class)
-object DataStoreModule {
+object FactDataStoreModule {
     @Provides
     @Singleton
-    fun provideDataStore(
+    fun provideFactDataStore(
         @ApplicationContext context: Context,
         coroutineScope: CoroutineScope
     ): DataStore<FactProto> {
