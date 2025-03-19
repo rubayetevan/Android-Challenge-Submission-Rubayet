@@ -6,4 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface FactService {
     fun getNewFact(): Flow<Result<FactResponse>>
+    suspend fun getLastFact(): FactResponse?
 }
