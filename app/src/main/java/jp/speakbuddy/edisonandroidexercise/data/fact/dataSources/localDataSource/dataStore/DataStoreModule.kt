@@ -1,4 +1,4 @@
-package jp.speakbuddy.edisonandroidexercise.data.fact.dataSources.localDataSource
+package jp.speakbuddy.edisonandroidexercise.data.fact.dataSources.localDataSource.dataStore
 
 import android.content.Context
 import androidx.datastore.core.DataStore
