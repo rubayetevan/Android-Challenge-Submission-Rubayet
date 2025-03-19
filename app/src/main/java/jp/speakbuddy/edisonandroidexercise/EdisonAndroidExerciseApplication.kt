@@ -18,13 +18,13 @@ class EdisonAndroidExerciseApplication : Application(), SingletonImageLoader.Fac
             .crossfade(true)
             .memoryCache {
                 MemoryCache.Builder()
-                    .maxSizePercent(context, 0.25)
+                    .maxSizePercent(context, BuildConfig.IMAGE_MEMORY_CACHE_PERCENT)
                     .build()
             }
             .diskCache {
                 DiskCache.Builder()
                     .directory(context.cacheDir.resolve(BuildConfig.IMAGE_CACHE_DIRECTORY))
-                    .maxSizePercent(0.02)
+                    .maxSizePercent(BuildConfig.IMAGE_DISK_CACHE_PERCENT)
                     .build()
             }.build()
     }
