@@ -1,4 +1,4 @@
-package jp.speakbuddy.edisonandroidexercise.data.fact.dataSources.remoteDataSource
+package jp.speakbuddy.edisonandroidexercise.data.fact.dataSources.remoteDataSource.network
 
 import jp.speakbuddy.edisonandroidexercise.data.fact.dataSources.remoteDataSource.models.FactResponse
 import retrofit2.Response
