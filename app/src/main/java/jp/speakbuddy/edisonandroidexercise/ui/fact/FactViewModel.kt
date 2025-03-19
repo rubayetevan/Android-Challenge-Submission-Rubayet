@@ -22,14 +22,14 @@ class FactViewModel @Inject constructor(private val factService: FactService) : 
 
     private val _uiState = MutableStateFlow(FactUiState())
     val uiState: StateFlow<FactUiState> = _uiState.onStart {
-        getLastFact()
+        loadLastFact()
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000L),
         initialValue = FactUiState()
     )
 
-    private fun getLastFact() {
+    private fun loadLastFact() {
         viewModelScope.launch {
             factService.getLastFact()?.let { factResponse ->
                 _uiState.update {
