@@ -16,40 +16,47 @@ fun <T> transformToResult(
 ): Flow<Result<T>> = flow {
     emit(Result.Loading)
 
+    val response: Response<T>
     try {
-        val response = withContext(context) {
+        response = withContext(context) {
             block()
-        }
-        if (response.isSuccessful) {
-            val body = response.body()
-            if (body != null) {
-                emit(Result.Success(body))
-            } else {
-                emit(Result.Error(ResultError(response.code(), "Response body is null")))
-            }
-        } else {
-            val errorCode = response.code()
-            val errorMessage = response.errorBody()?.string() ?: "Unknown error"
-            emit(Result.Error(ResultError(errorCode, errorMessage)))
         }
     } catch (exception: Exception) {
         when (exception) {
             is ConnectException -> {
                 emit(Result.Error(ResultError(-1, "No Internet Error: ${exception.message}")))
+                return@flow
             }
 
             is SocketTimeoutException -> {
                 emit(Result.Error(ResultError(-2, "Socket Timeout error: ${exception.message}")))
+                return@flow
             }
 
             is IOException -> {
                 emit(Result.Error(ResultError(-3, "Network error: ${exception.message}")))
+                return@flow
             }
 
             else -> {
                 emit(Result.Error(ResultError(-4, "Unexpected error: ${exception.message}")))
+                return@flow
             }
         }
     }
+
+    if (response.isSuccessful) {
+        val body = response.body()
+        if (body != null) {
+            emit(Result.Success(body))
+        } else {
+            emit(Result.Error(ResultError(response.code(), "Response body is null")))
+        }
+    } else {
+        val errorCode = response.code()
+        val errorMessage = response.errorBody()?.string() ?: "Unknown error"
+        emit(Result.Error(ResultError(errorCode, errorMessage)))
+    }
+
 
 }
