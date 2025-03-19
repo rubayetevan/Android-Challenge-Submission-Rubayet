@@ -1,11 +1,11 @@
-package jp.speakbuddy.edisonandroidexercise.data.fact.dataSources.localDataSource
+package jp.speakbuddy.edisonandroidexercise.data.fact.dataSources.localDataSource.dataStore
 
 import androidx.datastore.core.CorruptionException
 import androidx.datastore.core.Serializer
 import com.google.protobuf.InvalidProtocolBufferException
+import jp.speakbuddy.edisonandroidexercise.FactProto
 import java.io.InputStream
 import java.io.OutputStream
-import jp.speakbuddy.edisonandroidexercise.FactProto
 
 object FactSerializer: Serializer<FactProto> {
     override val defaultValue: FactProto = FactProto.getDefaultInstance()
