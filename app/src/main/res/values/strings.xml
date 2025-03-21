@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Edison Android Exercise</string>
+    <string name="cat_facts">Cat Facts</string>
+    <string name="update_fact">Update fact</string>
+    <string name="cat_image_description">A cat image</string>
+    <string name="fact">Fact</string>
+    <string name="multiple_cats">Multiple cats!</string>
+    <string name="fact_length">Length: %1$d</string>
 </resources>
