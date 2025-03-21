@@ -23,7 +23,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil3.compose.AsyncImage
 import jp.speakbuddy.edisonandroidexercise.ui.theme.EdisonAndroidExerciseTheme
+
+private const val CAT_IMAGE_URL =
+    "https://images.pexels.com/photos/104827/cat-pet-animal-domestic-104827.jpeg"
 
 @Composable
 fun FactScreen(
@@ -43,6 +47,10 @@ fun FactScreen(
             alignment = Alignment.CenterVertically
         )
     ) {
+        AsyncImage(
+            model = CAT_IMAGE_URL,
+            contentDescription = "Translated description of what the image contains",
+        )
         Text(
             text = "Fact",
             style = MaterialTheme.typography.titleLarge
@@ -55,7 +63,7 @@ fun FactScreen(
             )
         }
 
-        if(uiState.showFactLength){
+        if (uiState.showFactLength) {
             Text(
                 text = "${uiState.factLength}",
                 style = TextStyle(
@@ -68,7 +76,9 @@ fun FactScreen(
         Button(onClick = { viewModel.updateFact() }, enabled = !uiState.isLoading) {
             Text(text = "Update fact")
         }
+
         Spacer(Modifier.height(30.dp))
+
         if (uiState.isMultipleCats)
             Text(
                 text = "Multiple cats!",
