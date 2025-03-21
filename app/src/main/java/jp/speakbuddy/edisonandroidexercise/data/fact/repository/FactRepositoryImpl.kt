@@ -5,16 +5,24 @@ import jp.speakbuddy.edisonandroidexercise.data.fact.dataSources.localDataSource
 import jp.speakbuddy.edisonandroidexercise.data.fact.dataSources.remoteDataSource.FactRemoteDataSource
 import jp.speakbuddy.edisonandroidexercise.data.fact.dataSources.remoteDataSource.models.FactResponse
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 class FactRepositoryImpl @Inject constructor(
     private val factRemoteDataSource: FactRemoteDataSource,
     private val factLocalDataSource: FactLocalDataSource
 ) : FactRepository {
-    override fun getNewFact(): Flow<Result<FactResponse>> = factRemoteDataSource.getNewFact()
-    override fun getLastFact(): Flow<FactResponse?> = factLocalDataSource.getLastFact()
+    override fun getNewFact(): Flow<Result<FactResponse>> =
+        factRemoteDataSource.getNewFact().onEach {
+            if (it is Result.Success) {
+                saveFact(it.data)
+            }
+        }
 
-    override fun saveFact(factResponse: FactResponse) {
+    override suspend fun getLastFact(): FactResponse? = factLocalDataSource.getLastFact().first()
+
+    private fun saveFact(factResponse: FactResponse) {
         factLocalDataSource.saveFact(factResponse)
     }
 }
