@@ -15,6 +15,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.mock
+import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.whenever
 
@@ -31,6 +32,7 @@ class FactLocalDataSourceImplTest {
 
     @Before
     fun setup() {
+        MockitoAnnotations.openMocks(this)
         dataStoreMock = mock()
         testDispatcher = StandardTestDispatcher()
         testScope = TestScope(testDispatcher)
