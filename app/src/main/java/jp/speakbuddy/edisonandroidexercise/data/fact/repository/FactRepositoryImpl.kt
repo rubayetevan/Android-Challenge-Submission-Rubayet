@@ -22,7 +22,7 @@ class FactRepositoryImpl @Inject constructor(
 
     override suspend fun getLastFact(): FactResponse? = factLocalDataSource.getLastFact().first()
 
-    private fun saveFact(factResponse: FactResponse) {
+    private suspend fun saveFact(factResponse: FactResponse) {
         factLocalDataSource.saveFact(factResponse)
     }
 }
