@@ -1,13 +1,15 @@
 package jp.speakbuddy.edisonandroidexercise.ui.fact
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -16,8 +18,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.window.core.layout.WindowWidthSizeClass
 import jp.speakbuddy.edisonandroidexercise.R
-import jp.speakbuddy.edisonandroidexercise.ui.fact.components.FactScreenContentPortrait
+import jp.speakbuddy.edisonandroidexercise.ui.fact.components.FactScreenContentExpanded
+import jp.speakbuddy.edisonandroidexercise.ui.fact.components.FactScreenContentCompact
 import jp.speakbuddy.edisonandroidexercise.ui.fact.components.RefreshFactButton
 import jp.speakbuddy.edisonandroidexercise.ui.fact.models.FactUiState
 
@@ -30,19 +34,21 @@ fun FactScreen(
     viewModel: FactViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    FactScreenContent(uiState, viewModel::updateFact)
+    val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
+    val isCompact = windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.COMPACT
+    FactScreenContent(uiState, viewModel::updateFact, isCompact)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FactScreenContent(uiState: FactUiState, updateFact: () -> Unit) {
+fun FactScreenContent(uiState: FactUiState, updateFact: () -> Unit, isCompact: Boolean) {
     Scaffold(
         containerColor = Color(0xFFF5FAFE),
         floatingActionButton = {
             RefreshFactButton(onClick = updateFact, enabled = !uiState.isLoading)
         },
         topBar = {
-            TopAppBar(
+            CenterAlignedTopAppBar(
                 title = {
                     Text(
                         text = stringResource(R.string.cat_facts),
@@ -57,13 +63,17 @@ fun FactScreenContent(uiState: FactUiState, updateFact: () -> Unit) {
                 .fillMaxSize()
                 .padding(innerPadding),
         ) {
-            FactScreenContentPortrait(uiState)
+            if (isCompact) {
+                FactScreenContentCompact(uiState)
+            } else {
+                FactScreenContentExpanded(uiState)
+            }
         }
     }
 }
 
 
-@Preview
+@Preview(uiMode = Configuration.ORIENTATION_PORTRAIT)
 @Composable
 fun FactScreenContentPreview() {
     val uiState = FactUiState(
@@ -71,7 +81,5 @@ fun FactScreenContentPreview() {
         factLength = 145,
         isLoading = false
     )
-    FactScreenContent(uiState) {
-
-    }
+    FactScreenContent(uiState, updateFact = {}, isCompact = true)
 }
