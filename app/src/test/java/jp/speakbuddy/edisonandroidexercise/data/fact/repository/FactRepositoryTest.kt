@@ -10,31 +10,22 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
-import org.mockito.junit.MockitoJUnitRunner
-import org.mockito.kotlin.any
-import org.mockito.kotlin.never
 import org.mockito.kotlin.whenever
 
-@RunWith(MockitoJUnitRunner::class)
-class FactRepositoryImplTest {
-
+class FactRepositoryTest {
     @Mock
     private lateinit var factRemoteDataSource: FactRemoteDataSource
-
     @Mock
     private lateinit var factLocalDataSource: FactLocalDataSource
 
-    private lateinit var factRepository: FactRepositoryImpl
+    private lateinit var factRepository: FactRepository
     private lateinit var testDispatcher: TestDispatcher
-
 
     @Before
     fun setup() {
@@ -51,26 +42,33 @@ class FactRepositoryImplTest {
         val successResult = Result.Success(factResponse)
         whenever(factRemoteDataSource.getNewFact()).thenReturn(flowOf(successResult))
         val result = factRepository.getNewFact().first()
-        Assert.assertEquals(successResult, result)
+        assert(result is Result.Success<FactResponse>)
+        assert((result as Result.Success<FactResponse>).data == factResponse)
         verify(factLocalDataSource).saveFact(factResponse)
     }
 
     @Test
-    fun `getNewFact when remote error then don't save and return error`() =
-        runTest(testDispatcher) {
-            val errorResult = Result.Error(ResultError(code = 400, message = "404 not found"))
-            whenever(factRemoteDataSource.getNewFact()).thenReturn(flowOf(errorResult))
-            val result = factRepository.getNewFact().first()
-            Assert.assertEquals(errorResult, result)
-            verify(factLocalDataSource, never()).saveFact(any())
-        }
+    fun `getNewFact when remote success then save and return Error`() = runTest(testDispatcher) {
+        val errorCode = 404
+        val errorResult = Result.Error(ResultError(errorCode, "Not Found"))
+        whenever(factRemoteDataSource.getNewFact()).thenReturn(flowOf(errorResult))
+        val result = factRepository.getNewFact().first()
+        assert(result is Result.Error)
+        assert((result as Result.Error).code == errorCode)
+    }
 
     @Test
     fun `getLastFact returns last fact from local data source`() = runTest(testDispatcher) {
         val factResponse = FactResponse("Last Fact", 20)
         whenever(factLocalDataSource.getLastFact()).thenReturn(flowOf(factResponse))
         val result = factRepository.getLastFact()
-        Assert.assertEquals(factResponse, result)
+        assert(result == factResponse)
     }
 
+    @Test
+    fun `getLastFact returns last fact from local data source as null`() = runTest(testDispatcher) {
+        whenever(factLocalDataSource.getLastFact()).thenReturn(flowOf(null))
+        val result = factRepository.getLastFact()
+        assert(result == null)
+    }
 }
