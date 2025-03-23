@@ -12,33 +12,28 @@ import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mock
 import org.mockito.Mockito.mock
 import org.mockito.MockitoAnnotations
-import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.whenever
 
-
-@RunWith(MockitoJUnitRunner::class)
-class FactLocalDataSourceImplTest {
-
+class FactLocalDataSourceTest {
     @Mock
-    private lateinit var dataStoreMock: DataStore<FactProto>
-    private lateinit var factLocalDataSource: FactLocalDataSourceImpl
+    private lateinit var dataStore: DataStore<FactProto>
+    private lateinit var factLocalDataSource: FactLocalDataSource
+
     private lateinit var testDispatcher: TestDispatcher
     private lateinit var testScope: TestScope
-
 
     @Before
     fun setup() {
         MockitoAnnotations.openMocks(this)
-        dataStoreMock = mock()
+        dataStore = mock()
         testDispatcher = StandardTestDispatcher()
         testScope = TestScope(testDispatcher)
-        factLocalDataSource = FactLocalDataSourceImpl(dataStoreMock, testScope)
+        factLocalDataSource = FactLocalDataSourceImpl(dataStore,testScope)
     }
-
 
     @Test
     fun `getLastFact returns FactResponse when dataStore has data`() = runTest(testDispatcher) {
@@ -46,16 +41,18 @@ class FactLocalDataSourceImplTest {
         val length = 10
         val factProto = FactProto.newBuilder().setFact(fact).setLength(length).build()
         val expectedFactResponse = FactResponse(fact, length)
-        whenever(dataStoreMock.data).thenReturn(flowOf(factProto))
-        val result: FactResponse? = factLocalDataSource.getLastFact().first()
-        assertEquals(expectedFactResponse, result)
+        whenever(dataStore.data).thenReturn(flowOf(factProto))
+        val factResponse = factLocalDataSource.getLastFact().first()
+        assertEquals(expectedFactResponse, factResponse)
+
     }
 
     @Test
-    fun `getLastFact returns null when dataStore has no data`() = runTest(testDispatcher) {
-        whenever(dataStoreMock.data).thenReturn(flowOf(FactProto.getDefaultInstance()))
-        val result: FactResponse? = factLocalDataSource.getLastFact().first()
-        assertEquals(null, result)
+    fun `getLastFact returns FactResponse when dataStore has no data`() = runTest(testDispatcher) {
+        val factProto = FactProto.getDefaultInstance()
+        whenever(dataStore.data).thenReturn(flowOf(factProto))
+        val factResponse = factLocalDataSource.getLastFact().first()
+        assertEquals(null, factResponse)
     }
 
 }
