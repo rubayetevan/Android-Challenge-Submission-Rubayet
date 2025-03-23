@@ -6,4 +6,6 @@
     <string name="fact">Fact</string>
     <string name="multiple_cats">Multiple cats!</string>
     <string name="fact_length">Length: %1$d</string>
+    <string name="curious_about_cats">Curious about cats?</string>
+    <string name="tap_update_to_learn">Tap \'Update Fact\' to learn something new!</string>
 </resources>
