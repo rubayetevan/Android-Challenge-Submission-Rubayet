@@ -125,6 +125,7 @@ dependencies {
     testImplementation ("org.mockito.kotlin:mockito-kotlin:5.4.0")
     testImplementation ("io.mockk:mockk:1.13.17")
     testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.1")
+    testImplementation("app.cash.turbine:turbine:0.12.3")
     debugImplementation("androidx.compose.ui:ui-tooling:1.7.8")
     debugImplementation("androidx.compose.ui:ui-test-manifest:1.7.8")
 }
