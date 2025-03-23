@@ -8,9 +8,11 @@ import jp.speakbuddy.edisonandroidexercise.core.Result
 import jp.speakbuddy.edisonandroidexercise.data.fact.dataSources.remoteDataSource.models.FactResponse
 import jp.speakbuddy.edisonandroidexercise.domain.fact.FactService
 import jp.speakbuddy.edisonandroidexercise.ui.fact.models.FactUiState
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -19,6 +21,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FactViewModel @Inject constructor(private val factService: FactService) : ViewModel() {
+    private val _errorMessageFlow = MutableSharedFlow<String?>()
+    val errorMessageFlow = _errorMessageFlow.asSharedFlow()
 
     private val _uiState = MutableStateFlow(FactUiState())
     val uiState: StateFlow<FactUiState> = _uiState.onStart {
@@ -29,7 +33,7 @@ class FactViewModel @Inject constructor(private val factService: FactService) : 
         initialValue = FactUiState()
     )
 
-    private fun loadLastFact() {
+    fun loadLastFact() {
         viewModelScope.launch {
             factService.getLastFact()?.let { factResponse ->
                 _uiState.update {
@@ -50,6 +54,7 @@ class FactViewModel @Inject constructor(private val factService: FactService) : 
                         _uiState.update {
                             it.copy(isLoading = false)
                         }
+                        _errorMessageFlow.emit(result.message)
                     }
 
                     is Result.Loading -> {
