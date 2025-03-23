@@ -17,6 +17,7 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
+import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.any
 import org.mockito.kotlin.never
@@ -37,6 +38,7 @@ class FactRepositoryImplTest {
 
     @Before
     fun setup() {
+        MockitoAnnotations.openMocks(this)
         testDispatcher = StandardTestDispatcher()
         factRemoteDataSource = mock()
         factLocalDataSource = mock()
