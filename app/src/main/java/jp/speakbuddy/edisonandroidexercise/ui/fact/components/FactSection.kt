@@ -6,7 +6,9 @@ import jp.speakbuddy.edisonandroidexercise.ui.fact.models.FactUiState
 
 @Composable
 fun FactSection(uiState: FactUiState, modifier: Modifier = Modifier) {
-    uiState.fact?.let { fact ->
-        FactCard(fact, uiState, modifier = modifier)
+    if (uiState.fact != null) {
+        FactCard(uiState, modifier = modifier)
+    } else {
+        EmptyFactSection()
     }
 }
