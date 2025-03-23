@@ -16,15 +16,14 @@ import androidx.compose.ui.unit.dp
 import jp.speakbuddy.edisonandroidexercise.ui.fact.models.FactUiState
 
 @Composable
-fun FactCard(fact: String, uiState: FactUiState) {
+fun FactCard(fact: String, uiState: FactUiState, modifier: Modifier = Modifier) {
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier,
         elevation = CardDefaults.cardElevation(10.dp)
     ) {
         Column(
             modifier = Modifier
-                .fillMaxWidth()
                 .animateContentSize()
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
