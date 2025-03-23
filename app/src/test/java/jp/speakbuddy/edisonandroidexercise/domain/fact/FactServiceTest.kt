@@ -12,19 +12,14 @@ import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.mock
 import org.mockito.MockitoAnnotations
-import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.whenever
 
-
-@RunWith(MockitoJUnitRunner::class)
-class FactServiceImplTest {
-
+class FactServiceTest {
+    private lateinit var factService: FactService
     private lateinit var testDispatcher: TestDispatcher
-    private lateinit var factService: FactServiceImpl
 
     @Mock
     private lateinit var factRepository: FactRepository
@@ -39,7 +34,6 @@ class FactServiceImplTest {
 
     @Test
     fun `getNewFact calls repository getNewFact and returns Success`() = runTest(testDispatcher) {
-
         val factResponse = FactResponse("New Fact", 15)
         val expectedResult = Result.Success(factResponse)
         whenever(factRepository.getNewFact()).thenReturn(flowOf(expectedResult))
@@ -76,5 +70,4 @@ class FactServiceImplTest {
         val result = factService.getLastFact()
         assertEquals(null, result)
     }
-
 }
