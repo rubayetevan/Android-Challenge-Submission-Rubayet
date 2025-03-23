@@ -1,7 +1,6 @@
 package jp.speakbuddy.edisonandroidexercise.data.fact.dataSources.remoteDataSource
 
 import jp.speakbuddy.edisonandroidexercise.core.Result
-import jp.speakbuddy.edisonandroidexercise.core.transformToResult
 import jp.speakbuddy.edisonandroidexercise.data.fact.dataSources.remoteDataSource.models.FactResponse
 import jp.speakbuddy.edisonandroidexercise.data.fact.dataSources.remoteDataSource.network.FactRetrofitService
 import junit.framework.TestCase.assertEquals
@@ -9,6 +8,7 @@ import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestDispatcher
+import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Before
@@ -23,14 +23,17 @@ import retrofit2.Response
 class FactRemoteDataSourceTest {
     @Mock
     private lateinit var catFactRetrofitService: FactRetrofitService
+    private lateinit var factRemoteDataSource: FactRemoteDataSource
     private lateinit var testDispatcher: TestDispatcher
+    private lateinit var testScope: TestScope
 
     @Before
     fun setup() {
         MockitoAnnotations.openMocks(this)
         catFactRetrofitService = mock()
         testDispatcher = StandardTestDispatcher()
-
+        testScope = TestScope(testDispatcher)
+        factRemoteDataSource = FactRemoteDataSourceImpl(catFactRetrofitService, testScope)
     }
 
     @Test
@@ -41,11 +44,9 @@ class FactRemoteDataSourceTest {
         )
         val res: Response<FactResponse> = Response.success(mockFactResponse)
         whenever(catFactRetrofitService.getFact()).thenReturn(res)
-        val result = transformToResult(coroutineContext) {
-            catFactRetrofitService.getFact()
-        }
-        assertEquals(Result.Loading, result.first())
-        val successResult = result.drop(1).first()
+        val resultFlow = factRemoteDataSource.getNewFact()
+        assertEquals(Result.Loading, resultFlow.first())
+        val successResult = resultFlow.drop(1).first()
         assert(successResult is Result.Success<FactResponse>)
         assertEquals(mockFactResponse, (successResult as Result.Success<FactResponse>).data)
     }
@@ -54,14 +55,11 @@ class FactRemoteDataSourceTest {
     fun getFactNullBodyResponseTest() = runTest(testDispatcher) {
         val res: Response<FactResponse> = Response.success(null)
         whenever(catFactRetrofitService.getFact()).thenReturn(res)
-        val resultFlow = transformToResult(coroutineContext) {
-            catFactRetrofitService.getFact()
-        }
+        val resultFlow = factRemoteDataSource.getNewFact()
         assertEquals(Result.Loading, resultFlow.first())
         val result = resultFlow.drop(1).first()
         assert(result is Result.Error)
         assertEquals("Response body is null", (result as Result.Error).message)
-
     }
 
     @Test
@@ -73,9 +71,7 @@ class FactRemoteDataSourceTest {
             errorMessage.toResponseBody(null)
         )
         whenever(catFactRetrofitService.getFact()).thenReturn(res)
-        val resultFlow = transformToResult(coroutineContext) {
-            catFactRetrofitService.getFact()
-        }
+        val resultFlow = factRemoteDataSource.getNewFact()
         assertEquals(Result.Loading, resultFlow.first())
         val result = resultFlow.drop(1).first()
         assert(result is Result.Error)
