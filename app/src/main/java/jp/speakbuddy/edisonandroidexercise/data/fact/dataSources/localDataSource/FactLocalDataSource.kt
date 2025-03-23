@@ -5,5 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface FactLocalDataSource {
     fun getLastFact(): Flow<FactResponse?>
-    fun saveFact(factResponse: FactResponse)
+    suspend fun saveFact(factResponse: FactResponse):FactResponse
 }
