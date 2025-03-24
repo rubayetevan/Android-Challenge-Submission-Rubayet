@@ -1,4 +1,4 @@
-package jp.speakbuddy.edisonandroidexercise.ui.fact.components
+package jp.speakbuddy.edisonandroidexercise.presentation.fact.components
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import jp.speakbuddy.edisonandroidexercise.ui.fact.models.FactUiState
+import jp.speakbuddy.edisonandroidexercise.presentation.fact.models.FactUiState
 
 @Composable
 fun FactCard(uiState: FactUiState, modifier: Modifier = Modifier) {

@@ -1,4 +1,4 @@
-package jp.speakbuddy.edisonandroidexercise.ui.fact.components
+package jp.speakbuddy.edisonandroidexercise.presentation.fact.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -7,7 +7,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import jp.speakbuddy.edisonandroidexercise.R
-import jp.speakbuddy.edisonandroidexercise.ui.fact.models.FactUiState
+import jp.speakbuddy.edisonandroidexercise.presentation.fact.models.FactUiState
 
 @Composable
 fun FactMetadataRow(uiState: FactUiState) {

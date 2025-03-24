@@ -1,4 +1,4 @@
-package jp.speakbuddy.edisonandroidexercise.ui.fact
+package jp.speakbuddy.edisonandroidexercise.presentation.fact
 
 import android.content.res.Configuration
 import android.widget.Toast
@@ -22,10 +22,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.window.core.layout.WindowWidthSizeClass
 import jp.speakbuddy.edisonandroidexercise.R
-import jp.speakbuddy.edisonandroidexercise.ui.fact.components.FactScreenContentExpanded
-import jp.speakbuddy.edisonandroidexercise.ui.fact.components.FactScreenContentCompact
-import jp.speakbuddy.edisonandroidexercise.ui.fact.components.RefreshFactButton
-import jp.speakbuddy.edisonandroidexercise.ui.fact.models.FactUiState
+import jp.speakbuddy.edisonandroidexercise.presentation.fact.components.FactScreenContentExpanded
+import jp.speakbuddy.edisonandroidexercise.presentation.fact.components.FactScreenContentCompact
+import jp.speakbuddy.edisonandroidexercise.presentation.fact.components.RefreshFactButton
+import jp.speakbuddy.edisonandroidexercise.presentation.fact.models.FactUiState
 
 const val CAT_IMAGE_URL =
     "https://images.pexels.com/photos/104827/cat-pet-animal-domestic-104827.jpeg"

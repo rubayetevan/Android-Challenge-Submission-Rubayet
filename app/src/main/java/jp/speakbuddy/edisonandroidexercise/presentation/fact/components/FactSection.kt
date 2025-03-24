@@ -1,8 +1,8 @@
-package jp.speakbuddy.edisonandroidexercise.ui.fact.components
+package jp.speakbuddy.edisonandroidexercise.presentation.fact.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import jp.speakbuddy.edisonandroidexercise.ui.fact.models.FactUiState
+import jp.speakbuddy.edisonandroidexercise.presentation.fact.models.FactUiState
 
 @Composable
 fun FactSection(uiState: FactUiState, modifier: Modifier = Modifier) {

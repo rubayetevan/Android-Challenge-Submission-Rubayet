@@ -1,4 +1,4 @@
-package jp.speakbuddy.edisonandroidexercise.ui.theme
+package jp.speakbuddy.edisonandroidexercise.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 

@@ -1,4 +1,4 @@
-package jp.speakbuddy.edisonandroidexercise.ui.fact.components
+package jp.speakbuddy.edisonandroidexercise.presentation.fact.components
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape

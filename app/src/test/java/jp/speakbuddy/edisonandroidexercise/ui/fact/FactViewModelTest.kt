@@ -10,7 +10,8 @@ import jp.speakbuddy.edisonandroidexercise.core.Result
 import jp.speakbuddy.edisonandroidexercise.core.ResultError
 import jp.speakbuddy.edisonandroidexercise.data.fact.dataSources.remoteDataSource.models.FactResponse
 import jp.speakbuddy.edisonandroidexercise.domain.fact.FactService
-import jp.speakbuddy.edisonandroidexercise.ui.fact.models.FactUiState
+import jp.speakbuddy.edisonandroidexercise.presentation.fact.FactViewModel
+import jp.speakbuddy.edisonandroidexercise.presentation.fact.models.FactUiState
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

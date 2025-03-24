@@ -1,4 +1,4 @@
-package jp.speakbuddy.edisonandroidexercise.ui.fact.components
+package jp.speakbuddy.edisonandroidexercise.presentation.fact.components
 
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text

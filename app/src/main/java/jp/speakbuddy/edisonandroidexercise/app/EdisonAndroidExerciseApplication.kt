@@ -1,4 +1,4 @@
-package jp.speakbuddy.edisonandroidexercise
+package jp.speakbuddy.edisonandroidexercise.app
 
 import android.app.Application
 import coil3.ImageLoader
@@ -10,6 +10,7 @@ import coil3.memory.MemoryCache
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
 import coil3.request.crossfade
 import dagger.hilt.android.HiltAndroidApp
+import jp.speakbuddy.edisonandroidexercise.BuildConfig
 import okhttp3.OkHttpClient
 import javax.inject.Inject
 

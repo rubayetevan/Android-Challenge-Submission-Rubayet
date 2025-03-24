@@ -1,4 +1,4 @@
-package jp.speakbuddy.edisonandroidexercise.ui.fact.models
+package jp.speakbuddy.edisonandroidexercise.presentation.fact.models
 
 data class FactUiState(
     val fact: String? = null,
